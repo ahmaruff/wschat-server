@@ -1,46 +1,13 @@
 package main
 
 import (
-	"fmt"
+	"ahmaruff/wschat/wsservice"
 	"os"
 
-	"github.com/gorilla/websocket"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/rs/zerolog"
 )
-
-var upgrader = websocket.Upgrader{}
-
-func WebsocketHandler(c echo.Context) error {
-	ws, err := upgrader.Upgrade(c.Response(), c.Request(), nil)
-
-	if err != nil {
-		return err
-	}
-
-	defer func(ws *websocket.Conn) {
-		err := ws.Close()
-		if err != nil {
-			return
-		}
-	}(ws)
-
-	for {
-		// WRITE
-		err := ws.WriteMessage(websocket.TextMessage, []byte("hola"))
-
-		if err != nil {
-			c.Logger().Error(err)
-		}
-
-		_, msg, err := ws.ReadMessage()
-		if err != nil {
-			c.Logger().Error(err)
-		}
-		fmt.Printf("message from client: %s\n", msg)
-	}
-}
 
 func main() {
 	e := echo.New()
@@ -58,13 +25,12 @@ func main() {
 	}))
 
 	e.Use(middleware.Recover())
-
-	e.GET("/ws", WebsocketHandler)
+	e.GET("/ws", wsservice.WebsocketHandler)
 
 	port := os.Getenv("WSCHAT_SERVER_PORT")
 	if port == "" {
 		port = "5000"
 	}
 
-	e.Start(":" + port)
+	e.Logger.Fatal(e.Start(":" + port))
 }
