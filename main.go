@@ -5,12 +5,19 @@ import (
 	"ahmaruff/wschat/wsservice"
 	"os"
 
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal().Err(err).Msg(".env file not found")
+	}
+	
 	e := echo.New()
 
 	logger := zerolog.New(os.Stdout)
