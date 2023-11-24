@@ -1,6 +1,7 @@
 package main
 
 import (
+	"ahmaruff/wschat/user"
 	"ahmaruff/wschat/wsservice"
 	"os"
 
@@ -25,7 +26,8 @@ func main() {
 	}))
 
 	e.Use(middleware.Recover())
-	e.GET("/ws", wsservice.WebsocketHandler)
+	user.InitUserRoutes(e)
+	wsservice.InitWsRoutes(e)
 
 	port := os.Getenv("WSCHAT_SERVER_PORT")
 	if port == "" {
