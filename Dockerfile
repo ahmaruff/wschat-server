@@ -9,7 +9,7 @@ COPY . .
 # RUN go mod tidy
 ENV GO111MODULE=off
 
-RUN go build -o binary
+RUN go build -o binary .
 
 # ENTRYPOINT ["/app/binary"]
 
