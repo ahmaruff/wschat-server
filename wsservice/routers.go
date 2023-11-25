@@ -21,6 +21,10 @@ func ListSessionHandler(c echo.Context) error {
 
 func CreateNewSessionHandler(c echo.Context) error {
 	t := c.QueryParam("type")
+	if t == "" {
+		return ErrInvalidSessionType
+	}
+
 	sessionId := ulid.Make()
 
 	session, err := MakeNewSession(sessionId, t)
@@ -53,8 +57,10 @@ func WebsocketHandler(c echo.Context) error {
 	}
 	currentSession, err := FindSession(currentSessionID)
 	if err != nil {
-		b, _ := currentSession.MarshalJSON()
-		log.Debug().Bytes("current_user", b)
+		_, err := currentSession.MarshalJSON()
+		if err != nil {
+			log.Error().Err(err).Msg(err.Error());
+		}
 		return echo.NewHTTPError(http.StatusBadRequest, "session not found")
 	}
 
@@ -66,8 +72,11 @@ func WebsocketHandler(c echo.Context) error {
 
 	currentUser, err := user.FindUser(userId)
 	if err != nil {
-		b, _ := currentUser.MarshalJSON()
-		log.Debug().Bytes("current_user", b)
+		_, err := currentUser.MarshalJSON()
+		if err != nil {
+			log.Error().Err(err).Msg(err.Error())
+		}
+		// log.Debug().Bytes("current_user", b)
 		return echo.NewHTTPError(http.StatusBadRequest, "user not found")
 	}
 

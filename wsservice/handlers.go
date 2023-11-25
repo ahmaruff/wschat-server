@@ -26,9 +26,10 @@ type SocketPayload struct {
 }
 
 type SocketResponse struct {
-	Sender  string `json:"sender"`
-	Type    string `json:"type"`
-	Message string `json:"message"`
+	SenderId   string `json:"sender_id"`
+	SenderName string `json:"sender_name"`
+	Type       string `json:"type"`
+	Message    string `json:"message"`
 }
 
 func joinSession(sessionId ulid.ULID, userId ulid.ULID) {
@@ -66,9 +67,10 @@ func broadcastMessage(sessionId ulid.ULID, senderId ulid.ULID, kind, message str
 				log.Error().Msg("session: session  not found")
 			}
 			parSes.Conn.WriteJSON(SocketResponse{
-				Sender:  senderSession.Name,
-				Type:    kind,
-				Message: message,
+				SenderId:   senderSession.User.Id.String(),
+				SenderName: senderSession.User.Name,
+				Type:       kind,
+				Message:    message,
 			})
 		}
 		session.LastActive = time.Now()
