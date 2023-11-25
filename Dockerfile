@@ -23,7 +23,7 @@ FROM gcr.io/distroless/static-debian11
 COPY --from=builder /app/wschat-server .
 
 # Expose the port your app runs on
-EXPOSE 8080
+EXPOSE 5000
 
 # Run the binary
 CMD ["./wschat-server"]
