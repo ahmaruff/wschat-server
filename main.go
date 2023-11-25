@@ -13,10 +13,10 @@ import (
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal().Err(err).Msg(".env file not found")
-	}
+	// err := godotenv.Load()
+	// if err != nil {
+	//	log.Fatal().Err(err).Msg(".env file not found")
+	//}
 	
 	e := echo.New()
 
