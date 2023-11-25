@@ -1,6 +1,6 @@
-FROM golang:alpine
+FROM golang:latest
 
-RUN apk update && apk add --no-cache git
+# RUN apk update && apk add --no-cache git
 
 WORKDIR /app
 
@@ -10,4 +10,6 @@ RUN go mod tidy
 
 RUN go build -o binary
 
-ENTRYPOINT ["/app/binary"]
+# ENTRYPOINT ["/app/binary"]
+
+CMD ["/app/binary"]

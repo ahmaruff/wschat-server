@@ -4,7 +4,6 @@ go 1.21.4
 
 require (
 	github.com/gorilla/websocket v1.5.1
-	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v4 v4.11.3
 	github.com/oklog/ulid/v2 v2.1.0
 	github.com/rs/zerolog v1.31.0
