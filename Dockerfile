@@ -1,18 +1,29 @@
-FROM golang:latest
+# Use the official Golang 1.21 image to create a build artifact.
+FROM golang:1.21 as builder
 
-# RUN apk update && apk add --no-cache git
-
+# Set the Current Working Directory inside the container
 WORKDIR /app
 
-COPY . .
+# Copy go.mod and go.sum files
+COPY go.mod go.sum ./
 
+# Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed
 RUN go mod download
 
-RUN go mod tidy
-# ENV GO111MODULE=off
+# Copy the source from the current directory to the Working Directory inside the container
+COPY . .
 
-RUN go build -o binary .
+# Build the Go app. Compile statically linked version of the binary.
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o wschat-server .
 
-# ENTRYPOINT ["/app/binary"]
+# Use a distroless image for the runtime environment to minimize size and surface area of attack
+FROM gcr.io/distroless/static-debian11
 
-CMD ["/app/binary"]
+# Copy the Pre-built binary file from the previous stage
+COPY --from=builder /app/wschat-server .
+
+# Expose the port your app runs on
+EXPOSE 8080
+
+# Run the binary
+CMD ["./wschat-server"]
