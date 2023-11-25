@@ -6,8 +6,10 @@ WORKDIR /app
 
 COPY . .
 
-# RUN go mod tidy
-ENV GO111MODULE=off
+RUN go mod download
+
+RUN go mod tidy
+# ENV GO111MODULE=off
 
 RUN go build -o binary .
 
