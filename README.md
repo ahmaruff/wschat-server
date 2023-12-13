@@ -7,6 +7,8 @@ This project is part of Talenthub batch 11 "Scalable Web Service With Go" submis
 
 **REST API ROUTES:**
 
+| METHOD | PATH | DESC |
+| --- | --- | --- |
 | GET | `/session` | return all active/avaliable session chat | 
 | GET | `/session/create?type=<PRIVATE/GROUP>` | create new session, return Session | 
 | POST | `/user/create` body :` { name: "yourname" }` | create new user |
@@ -14,6 +16,8 @@ This project is part of Talenthub batch 11 "Scalable Web Service With Go" submis
 
 WEBSOCKET
 
+| METHOD | PATH |
+| --- | --- |
 | GET | `/ws?session_id=<SESSION_ID>&user_id=<USER_ID>` | 
 
 
